@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Media Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
+    <style>
+        .liked {
+            color: red;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <!-- Navbar -->
@@ -141,22 +147,44 @@
                         </div>
                         <div class="mt-4 flex justify-between items-center">
                             <div class="flex space-x-4">
-                                <span class="flex items-center space-x-1">
-                                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                <span class="flex items-center space-x-1 like-button cursor-pointer">
+                                    <svg class="w-5 h-5 text-gray-400 like-icon" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
                                     </svg>
-                                    <span>125</span>
+                                    <span class="like-count">125</span>
                                 </span>
-                                <span class="flex items-center space-x-1">
-                                    <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                <span class="flex items-center space-x-1 comment-button cursor-pointer">
+                                    <svg class="w-5 h-5 text-gray-400 comment-icon" fill="currentColor" viewBox="0 0 24 24">
                                         <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 14H8v-2h4v2zm6-4H8v-2h10v2zm0-4H8V6h10v2z"></path>
                                     </svg>
-                                    <span>348</span>
+                                    <span class="comment-count">348</span>
                                 </span>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white p-4 rounded-lg shadow">
+
+    <!-- Modal -->
+    <div class="modal fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+        <div class="modal-dialog bg-white rounded-lg overflow-hidden shadow-xl max-w-lg w-full">
+            <div class="modal-content">
+                <div class="modal-header p-4 border-b border-gray-200 flex justify-between items-center">
+                    <h5 class="modal-title text-lg font-semibold">Comments</h5>
+                    <button type="button" class="close-modal text-gray-500 hover:text-gray-700">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9l-3 3m0-6l3 3m3 3l-3-3m0 0l3-3m-6 6l3-3m-3 3l3-3" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <textarea class="form-control w-full p-2 border border-gray-300 rounded-lg" placeholder="Write a comment..." rows="3"></textarea>
+                </div>
+                <div class="modal-footer p-4 border-t border-gray-200 flex justify-end">
+                    <button type="button" class="close-modal bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Close</button>
+                    <button type="button" class="ml-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>                    <div class="bg-white p-4 rounded-lg shadow">
                         <div class="flex items-center">
                             <img src="https://i.pinimg.com/564x/c8/96/5a/c8965a48e07437c660d31e57afb382c7.jpg" alt="Avatar" class="w-12 h-12 rounded-full">
                             <div class="ml-4">
@@ -311,6 +339,31 @@
             </div>
         </div>
     </div>
+    <script>
+        document.querySelector('.like-button').addEventListener('click', function() {
+            const likeIcon = document.querySelector('.like-icon');
+            const likeCount = document.querySelector('.like-count');
+            let count = parseInt(likeCount.textContent);
+
+            if (likeIcon.classList.contains('liked')) {
+                likeIcon.classList.remove('liked');
+                likeCount.textContent = count - 1;
+            } else {
+                likeIcon.classList.add('liked');
+                likeCount.textContent = count + 1;
+            }
+        });
+
+        document.querySelector('.comment-button').addEventListener('click', function() {
+            document.querySelector('.modal').classList.add('active');
+        });
+
+        document.querySelectorAll('.close-modal').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelector('.modal').classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>
 
